@@ -16,7 +16,7 @@ class Game:
 
         self.apple = []
         self.picked_apples = 0
-        self.apple_counter = tk.Label(master, text=self.picked_apples)
+        self.apple_counter = tk.Label(master, text=f'Apples count: {self.picked_apples})
         self.apple_counter.pack()
         self.Apple()
         self.face_pics = {'r': tk.PhotoImage(file=r'SnakeFace\face_r.png'),
@@ -51,7 +51,7 @@ class Game:
 
     def CheckPosition(self):
         if self.snake.count(self.snake[-1]) > 1:
-            master.unbind('<Key>', bind_id)
+            master.unbind('<Key>', bind_move)
             self.GameOver()
             return 1
 
@@ -108,9 +108,20 @@ class Game:
         self.Face(z)
 
     def GameOver(self):
+        global bind_restart
         self.canvas.create_oval(self.map_size / 2 - 80, self.map_size / 2 - 40, self.map_size / 2 + 80,
                                 self.map_size / 2 + 40, fill="black", outline='white')
         self.canvas.create_text(self.map_size / 2, self.map_size / 2, text='Game Over', fill='red')
+
+        self.canvas.create_text(self.map_size / 2, self.map_size / 2 + 15, text='Press "r" ro restart!', fill='white')
+
+
+        bind_restart = master.bind('<Key-r>', lambda x: self.GameRestart())
+
+    def GameRestart(self):
+        master.destroy()
+        StartGame(self.map_size)
+        master.unbind('<Key-r>', bind_restart)
 
     def NSC(self, number):
         if number % 20 == 0:
@@ -120,6 +131,8 @@ class Game:
 
 
 def StartGame(map_size = 400):
+    global master, bind_move
+
     master = tk.Tk()
     map_size = map_size
 
@@ -127,7 +140,7 @@ def StartGame(map_size = 400):
 
     # master config
     master.geometry(f'{map_size}x{map_size + 50}')
-    bind_id = master.bind('<Key>', lambda x: game.Update(x))
+    bind_move = master.bind('<Key>', lambda x: game.Update(x))
     master.mainloop()
 
 if __name__ == '__main__':
