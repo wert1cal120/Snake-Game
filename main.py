@@ -61,7 +61,7 @@ class Game:
             self.apple.clear()
             self.Apple()
             self.picked_apples += 1
-            self.apple_counter.config(text=self.picked_apples)
+            self.apple_counter.config(text=f'Apples count: {self.picked_apples}')
 
         else:
             self.canvas.delete(self.snake_rectangles[0])
