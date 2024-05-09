@@ -1,5 +1,5 @@
-import tkinter as tk
 import random as rand
+import tkinter as tk
 
 
 class Game:
@@ -16,7 +16,7 @@ class Game:
 
         self.apple = []
         self.picked_apples = 0
-        self.apple_counter = tk.Label(master, text=f'Apples count: {self.picked_apples})
+        self.apple_counter = tk.Label(master, text=f'Apples count: {self.picked_apples}')
         self.apple_counter.pack()
         self.Apple()
         self.face_pics = {'r': tk.PhotoImage(file=r'SnakeFace\face_r.png'),
