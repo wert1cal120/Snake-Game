@@ -24,6 +24,8 @@ class Game:
                           'l': tk.PhotoImage(file=r'SnakeFace\face_l.png'),
                           'd': tk.PhotoImage(file=r'SnakeFace\face_d.png')}
         self.face = self.canvas.create_image(70, 30, image=self.face_pics['r'])
+        self.direction = 39
+        self.Update()
 
     def MapBuiulder(self):
         for i in range(0, self.map_size + 1, 40):
@@ -81,11 +83,14 @@ class Game:
         self.face = self.canvas.create_image(self.snake[-1][0] + 10, self.snake[-1][1] + 10,
                                              image=self.face_pics[direction])
 
-    def Update(self, direction):
+    def Move(self, pressed_key):
+        self.direction = pressed_key.keycode
+
+    def Update(self):
         # snake
         x, y, z = 0, 0, ''
         rectangle = self.snake[-1]
-        match direction.keycode:
+        match self.direction:
             case 37:  # Left
                 x -= 20
                 z = 'l'
@@ -103,9 +108,13 @@ class Game:
 
         self.snake.append([rectangle[0] + x, rectangle[1] + y, rectangle[2] + x, rectangle[3] + y])
         if self.CheckPosition() is not None:
+            print(2)
+
             return
         self.Snake()
         self.Face(z)
+        print(1)
+        self.canvas.after(500, self.Update)
 
     def GameOver(self):
         global bind_restart
@@ -140,7 +149,7 @@ def StartGame(map_size = 400):
 
     # master config
     master.geometry(f'{map_size}x{map_size + 50}')
-    bind_move = master.bind('<Key>', lambda x: game.Update(x))
+    bind_move = master.bind('<Key>', lambda x: game.Move(x))
     master.mainloop()
 
 if __name__ == '__main__':
